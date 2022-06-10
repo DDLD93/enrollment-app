@@ -1,9 +1,29 @@
-import React from 'react'
+import React,{useState,useEffect,useContext} from 'react'
 import Card from '@mui/material/Card';
 import {Link} from "react-router-dom";
-import { Grid } from '@mui/material';
+import { Grid } from '@mui/material'
+import config from "./config"
+import StateContext from "./context/context"
 function WardList(prop) {
-    var list = prop.wardArr
+    const [list, setlist] = useState([])
+   // const {} = useContext(StateContext)
+    function fetchDashboard() {
+        fetch(`${config.endPoint}/paypoint/dashboard`,{
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": "Bearer "+ "token",
+            },
+        }).
+            then(res => res.json()).
+            then(arr => {
+                setlist(arr)
+        }).
+        catch(err=>console.log(err))
+    }
+    useEffect(() => {
+      fetchDashboard()
+    }, [])
+    
     return (
         <Grid container gap={2} p={5}>
             {list.map(ward => (

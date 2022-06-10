@@ -185,7 +185,7 @@ export default function Biometric(prop) {
         </div>
 
       </div>
-      <Button  onClick={updateBio}  size="small" disableElevation sx={{width:200, marginLeft:"33%"}} variant='contained' fullWidth={true}  color="primary" >Save and continue</Button>
+      <Button disabled  onClick={updateBio}  size="small" disableElevation sx={{width:200, marginLeft:"33%"}} variant='contained' fullWidth={true}  color="primary" >Save and continue</Button>
 
     </Box>
 

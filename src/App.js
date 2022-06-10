@@ -1,26 +1,57 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useContext, useEffect, useState } from 'react';
+import EditIcon from '@mui/icons-material/Edit';
+import { DataGrid, GridActionsCellItem } from '@mui/x-data-grid';
+import { AppBar, Card, Grid } from '@mui/material';
+import { Routes, Route, Navigate, useLocation } from "react-router-dom";
+import ModalStepper from './modalStepper';
+import NavAppBar from './AppBar';
+import { StateContext } from './context/context';
+import SignIn from './Sign';
+import WardList from './WardList';
 
-function App() {
+
+const columns = [
+  { field: 'name', headerName: 'Name', width: 200, align: "center" },
+  { field: 'age', headerName: 'Age', type: 'number', width: 60, align: "center" },
+  { field: 'gender', headerName: 'Gender', type: "singleSelect", width: 80 },
+  { field: 'maritalStatus', headerName: 'Marital Status', width: 100 },
+  { field: 'state', headerName: 'State', width: 90 },
+  { field: 'lga', headerName: 'LGA', width: 90 },
+  { field: 'ward', headerName: 'Ward', width: 90 },
+  { field: 'phone', headerName: 'Phone', type: 'number', width: 120 },
+  { field: 'status', headerName: 'Status', width: 150 },
+  { field: 'actions', type: 'actions', width: 70,onclick, getActions: () => [<GridActionsCellItem icon={<ModalStepper />} label="Edit" />,], },
+];
+
+export default function App() {
+  const { beneList,wardList ,user } = useContext(StateContext)
+
+  let  rows = beneList.map(obj=>{
+    return{
+        id:obj._id,
+        name: obj.fullName,
+        age: obj.age,
+        gender: obj.gender,
+        maritalStatus: obj.maritalStatus,
+        state: obj.state,
+        lga: obj.lga,
+        ward: obj.ward,
+        phone: obj.phone,
+        status: <p>hello world</p>,
+    }
+})
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>{!user ? <SignIn /> : <Grid height="100%" width="100%" sx={{ m: 0 }} container justifyContent="center" alignItems="center" >
+      <NavAppBar />
+      <Card sx={{ height: 600, width: "100%" }}>
+        <Routes>
+          <Route  path="/table" element={<DataGrid rows={rows} columns={columns} />} />
+          <Route  path="/" element={<WardList wardArr={wardList} />} />
+        </Routes>
+      </Card>
+    </Grid>}
+
+    </>
   );
 }
-
-export default App;

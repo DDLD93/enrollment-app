@@ -46,31 +46,15 @@ export default function Biodata(prop) {
 
   const updateBio = () => {
     let data = {
-      occupation,
-      disability,
-      guarantor: gname,
-      type: idtype,
-      idNo: idNo,
-      imagePath: imgSrc
+        occupation,
+        disability,
+        guarantor: gname,
+        type: idtype,
+        idNo: idNo,
+        imagePath: imgSrc
     }
-    setObj(data)
-    //updateObject(data)
+    setObj("identification",data)
     handleModalNext()
-    // // console.log("meta data>>>>>> ",data)
-    // // console.log("file data>>>>>> ",file)
-    // form.append("meta", JSON.stringify(data))
-    // form.append("photoID", imgSrc)
-
-    // let url = `${config.EndPionts}/beneficiaries/update/${prop.id}`
-    // fetch(url, {
-    //   method: "POST",
-    //   body: form
-    // }).then(res => (res.json())).
-    //   then(res => {
-    //     handleModalClose()
-    //     notification("success", "")
-    //   }).
-    //   catch(err => console.log("error >>>>> ", err))
   }
 
   const idTypeList = [

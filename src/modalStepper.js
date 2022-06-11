@@ -30,65 +30,15 @@ const style = {
 
 export default function ModalStepper(prop) {
     const [open, setOpen] = React.useState(false);
-    const [cStep, setcStep] = React.useState(0)
-   
+
     const handleOpen = () => {
         setOpen(true)
     };
     const handleClose = () => {
         setOpen(false)
     };
-    // var {cStep} = React.useContext(StateContext)
-    const obj = prop.user
-    // const stepper = [
-    //     {
-    //         name: "Bio Data",
-    //         component: <Info
-    //             code={obj.code}
-    //             status={obj.status}
-    //             payment={obj.isPayment}
-    //             fullName={obj.fullName}
-    //             gender={obj.gender}
-    //             disability={obj.disability}
-    //             age={obj.age}
-    //             lga={obj.lga}
-    //             phone={obj.phone}
-    //             maritalStatus={obj.maritalStatus}
-    //             id={obj._id}
-    //             occupation={obj.occupation}
-    //             state={obj.state}
-    //             ward={obj.ward}
-    //             idType={obj.identification && obj.identification.type}
-    //             idNo={obj.identification && obj.identification.idNo}
-    //             next={handleNext}
-    //         />,
-    //         index: 1
-    //     },
-    //     {
-    //         name: "Biometric",
-    //         component: <Biometric
-    //             id={obj._id}
-    //             handleNext={handleNext}
-    //         />,
-    //         index: 2
-    //     },
-    //     {
-    //         name: "Payment",
-    //         component: <PaymentMethod
-    //             id={obj._id}
-    //             handleNext={handleNext}
-    //             clientName={obj.fullName}
-    //             photo={obj.biometric && obj.biometric.imagePath}
-    //             status={obj.status}
-    //         />,
-    //         index: 3
-    //     },
-    // ]
-
-
-
-
-
+    const user = prop.userObj
+    
     return (
         <div>
             <IconButton size='large' onClick={handleOpen} color="secondary">
@@ -108,7 +58,7 @@ export default function ModalStepper(prop) {
                     <Box container sx={style.modal}>
                      <CustomStepper
                      next={handleClose}
-                      
+                     user={user}  
                      />
                     </Box>
                 </Fade>

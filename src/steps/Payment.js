@@ -27,7 +27,6 @@ const style = {
     width: 400,
     height: 400,
     bgcolor: 'background.paper',
-    justifyContent: "flex-start",
   },
 };
 
@@ -38,18 +37,15 @@ export default function Payment(prop) {
   const [imgSrc, setimgSrc] = React.useState("")
  const { token,setObj } = React.useContext(StateContext)
  let handleNext = prop.next
+ let id = prop.user
   const handleModalNext = React.useCallback(() => {
     handleNext()
   }, [handleNext])
 
 
-  //const { updateObject, notification } = React.useContext(StateContext)
   const imgPreview = (e) => {
-    let base64 = getBase64(e.target.files[0])
-    console.log(base64)
-    setpic(base64)
-    let obj = window.URL.createObjectURL(e.target.files[0])
-    setimgSrc(obj)
+    getBase64(e.target.files[0])
+    
   }
 
   const Input = styled('input')({
@@ -67,7 +63,7 @@ export default function Payment(prop) {
     var reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onload = function () {
-      console.log(reader.result);
+      setimgSrc(reader.result)
     };
     reader.onerror = function (error) {
       console.log('Error: ', error);
@@ -76,30 +72,16 @@ export default function Payment(prop) {
  
 
   const updateBio = () => {
+    console.log(id)
 
     let data = {
         methodOfPayment: type,
         remark,
         amount: 20000,
-        proofHash: pic,
+        imagePath: imgSrc,
     }
-    setObj(data)
+    setObj("payment",data,id)
     handleModalNext()
-
-    //  let url = `${config.EndPionts}/beneficiaries/payment/${id}`
-    // fetch(url, {
-    //   method: "POST",
-    //   headers: {
-    //     "Authorization": "Bearer "+ token,
-    // },
-    //   body: form
-    // }).then(res => (res.json())).
-    //   then(res => {
-    //     console.log(res)
-    //     notification("success", "Payment successfull")
-    //     handleModalClose()
-    //   }).
-    //   catch(err => console.log("error >>>>> ", err))
   }
 
 

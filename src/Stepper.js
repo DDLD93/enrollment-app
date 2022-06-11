@@ -20,7 +20,8 @@ export default function CustomStepper(prop) {
     //         [key]: value
     //     }));
     // };
-    let handleNextClose = prop.next    
+    let handleNextClose = prop.next 
+    let user= prop.user  
     const handleModalNext = React.useCallback(() => {
         handleNextClose()
       }, [prop.next])
@@ -40,10 +41,15 @@ export default function CustomStepper(prop) {
         {
             label: 'Bio-data update',
             component: <Biodata
-            // id={obj._id}
-            // clientName={obj.fullName}
-            // photo={obj.biometric && obj.biometric.imagePath}
-            // status={obj.status}
+            id={user._id}
+            fullName={user.fullName}
+            gender={user.gender}
+            age={user.age}
+            state={user.state}
+            lga={user.lga}
+            ward={user.ward}
+            phone={user.phone}
+            maritalStatus={user.maritalStatus}
             next={handleNext} 
             />,
         },
@@ -57,6 +63,7 @@ export default function CustomStepper(prop) {
             label: 'Payment',
             component: <Payment
             next={handleNext}
+            user={user.id}
             />,
         },
     ];
@@ -74,6 +81,7 @@ export default function CustomStepper(prop) {
                     <Button
                         size="small"
                         onClick={handleNext}
+                        disabled
                     //disabled={activeStep === maxSteps - 1}
                     >
                         Next

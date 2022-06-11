@@ -3,15 +3,16 @@ import Card from '@mui/material/Card';
 import {Link} from "react-router-dom";
 import { Grid } from '@mui/material'
 import config from "./config"
-import StateContext from "./context/context"
+import { StateContext } from './context/context';
+
 function WardList(prop) {
     const [list, setlist] = useState([])
-   // const {} = useContext(StateContext)
+  const {token} = useContext(StateContext)
     function fetchDashboard() {
         fetch(`${config.endPoint}/paypoint/dashboard`,{
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": "Bearer "+ "token",
+                "Authorization": "Bearer "+ token,
             },
         }).
             then(res => res.json()).

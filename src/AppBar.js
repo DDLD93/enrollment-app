@@ -59,7 +59,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-export default function NavAppBar() {
+export default function NavAppBar({count}) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
   const [OnlineStatus,setOnlineStatus]=React.useState(false)
@@ -179,6 +179,28 @@ export default function NavAppBar() {
       </MenuItem>
     </Menu>
   );
+  window.addEventListener('load', function(e) {
+    if (navigator.onLine) {
+      console.log('We\'re online!');
+    } else {
+      console.log('We\'re offline...');
+    }
+  }, false);
+  
+  window.addEventListener('online', function(e) {
+    console.log('And we\'re back :).');
+  }, false);
+  
+  window.addEventListener('offline', function(e) {
+    console.log('Connection is down.');
+  }, false);
+
+
+  React.useEffect(() => {
+  
+   
+  }, [])
+  
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -205,7 +227,7 @@ export default function NavAppBar() {
           <Box sx={{ color:"#000", display:"flex",justifyContent:"space-around", alignItems:"center" , flexGrow: 2,borderRadius:"6px", backgroundColor: "#33ff00", height: '100%' }} >
             <div>
               <span>Status: </span> <span>null</span> <br />
-              <span>Offline data: </span> <span>null</span> <br />
+              <span>Offline data: </span> <span>{count}</span> <br />
               <span>Processed data: </span> <span>null</span> <br />
             </div>
             <LoadingButton sx={{height:"30px"}} variant='contained' >Sync</LoadingButton>

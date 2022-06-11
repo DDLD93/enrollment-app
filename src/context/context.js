@@ -1,6 +1,5 @@
 import { createContext, useState, useEffect } from "react";
 import { useSnackbar } from 'notistack';
-//import Localbase from 'localbase'
 import config from "../config";
 import Localbase from 'localbase'
 
@@ -15,20 +14,27 @@ export default function StateContextProvider({ children }) {
     const setTokens = () => setToken(localStorage.getItem("token"))
     const [beneList, setbeneList] = useState([])
     const [object, setObject] = useState({})
-    const setObj = (obj)=>{
-        setObject({...object,obj})   
-        console.log("context store >>>>> ",object)     
+    const setObj = (key,value,id=null) => {
+        console.log("id >>>>",id)
+        setObject(prevState => ({
+            ...prevState,
+            [key]: value
+        }));
+        if(id){
+            db.doc({id}).update({
+                ...object
+            }).then(res=>console.log("update result >>>>", res)).catch(err => console.log("error >>>>", err))
+        }
     }
 
     let db = new Localbase('db').collection("beneList")
-   
-   // let db = new Localbase('list_db').collection('list')
+
+    // let db = new Localbase('list_db').collection('list')
     const { enqueueSnackbar } = useSnackbar();
     const notification = (message, type = "info",) => {
         enqueueSnackbar(message, {
             variant: type,
             anchorOrigin: { vertical: "top", horizontal: "right" }
-
         });
 
     }
@@ -38,7 +44,7 @@ export default function StateContextProvider({ children }) {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": "Bearer "+ token,
+                "Authorization": "Bearer " + token,
             },
             body: JSON.stringify(data),
         })
@@ -48,8 +54,8 @@ export default function StateContextProvider({ children }) {
             .then((response) => {
                 if (response.status == "success") {
                     localStorage.setItem("user", JSON.stringify(response.user))
-                    setUser(JSON.parse(localStorage.getItem("user")))
-                    localStorage.setItem("token",response.token)
+                    setUsers()
+                    localStorage.setItem("token", response.token)
                     setTokens()
                     notification("Login Success", "success")
                     return
@@ -59,59 +65,57 @@ export default function StateContextProvider({ children }) {
                 notification(err.message, "error")
             });
     };
-    function fetchBene() {
-        fetch(`${config.endPoint}/beneficiaries/paypoint`,{
+    function cacheBeneData() {
+        fetch(`${config.endPoint}/beneficiaries/paypoint`, {
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": "Bearer "+ token,
-
+                "Authorization": "Bearer " + token,
             },
         }).
             then(res => res.json()).
-            then(arr => { 
-                setbeneList(arr)
-                // arr.forEach(obj => {
-                //     db.doc({ id: obj._id }).get().then(document => {
-                //         if(!document){
-                //             console.log("Indexing document")
-                //             db.add({
-                //                     id:obj._id,
-                //                     name: obj.fullName,
-                //                     age: obj.age,
-                //                     gender: obj.gender,
-                //                     maritalStatus: obj.maritalStatus,
-                //                     state: obj.state,
-                //                     lga: obj.lga,
-                //                     ward: obj.ward,
-                //                     phone: obj.phone,
-                //                     status: obj.status,
-                //                 })
-                //             }
-                //       }).catch(err=>console.log(err))
-                   
-                // })
+            then(arr => {
+                //setbeneList(arr)
+                arr.forEach(obj => {
+                    db.doc({ id: obj._id }).get().then(document => {
+                        if (!document) {
+                            console.log("Indexing document")
+                            db.add({
+                                id: obj._id,
+                                fullName: obj.fullName,
+                                age: obj.age,
+                                gender: obj.gender,
+                                maritalStatus: obj.maritalStatus,
+                                state: obj.state,
+                                lga: obj.lga,
+                                ward: obj.ward,
+                                phone: obj.phone,
+                                status: obj.status,
+                            }, obj._id)
+                        }
+                    }).catch(err => console.log("error indexing", err))
+
+                })
             }).
-            catch(err=>console.log(err))
-            // db.get().then(docs => {
-            //   })     
+            catch(err => console.log("error fetching", err))
+        // db.get().then(docs => {
+        //   })     
     }
     function fetchDashboard() {
-        fetch(`${config.endPoint}/paypoint/dashboard`,{
+        fetch(`${config.endPoint}/paypoint/dashboard`, {
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": "Bearer "+ token,
+                "Authorization": "Bearer " + token,
             },
         }).
             then(res => res.json()).
             then(arr => {
                 setwardList(arr)
-        }).
-        catch(err=>console.log(err))
+            }).
+            catch(err => console.log(err))
     }
     useEffect(() => {
-        fetchBene()
-        fetchDashboard()
-    }, [])
+        if (user) cacheBeneData()
+    }, [user])
     const context = {
         notification,
         Login,

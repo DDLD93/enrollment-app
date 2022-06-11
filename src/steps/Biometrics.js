@@ -1,11 +1,5 @@
 import * as React from 'react';
-import Backdrop from '@mui/material/Backdrop';
 import Box from '@mui/material/Box';
-import Modal from '@mui/material/Modal';
-import Fade from '@mui/material/Fade';
-import IconButton from '@mui/material/IconButton';
-import Fingerprint from '@mui/icons-material/Fingerprint';
-import Typography from '@mui/material/Typography';
 import Webcam from 'webcam-easy';
 import { Button, Grid } from '@mui/material';
 import { StateContext } from '../context/context';
@@ -42,32 +36,18 @@ export default function Biometric(prop) {
   const {setObj} = React.useContext(StateContext)
   let handleNext = prop.next
   const handleModalNext = React.useCallback(() => {
+    stopFeed()
     handleNext()
     stopScan()
-    stopFeed()
   }, [handleNext])
   
   const updateBio = () => {
     let data = {
-        thumbHash:Right.split(",")[1],
-        imageHash:image
+        thumbHash:Right,
+        imageHash:image  
     }
-    setObj(data)
+    setObj("biometric",data)
     handleModalNext()
-    // console.log("meta data>>>>>> ",data)
-    // console.log("file data>>>>>> ",file)
-    // form.append("meta", JSON.stringify(data))
-    // form.append("image", image)
-    // let url = `${config.EndPionts}/beneficiaries/biometric/${id}`
-    // fetch(url, {
-    //   method: "POST",
-    //   body: form
-    // }).then(res => (res.json())).
-    //   then(res => {
-    //     handleModalClose()
-    //     console.log(res)
-    //   }).
-    //   catch(err => console.log("error >>>>> ", err))
   }
 
   const Fingerscanner = window.Fingerprint
@@ -102,7 +82,6 @@ export default function Biometric(prop) {
   function samplesAcquired(s) {
     let samples = JSON.parse(s.samples);
     let data = "data:image/png;base64," + Fingerscanner.b64UrlTo64(samples[0])
-    console.log(data)
     setRight(data)
   }
 
@@ -142,21 +121,18 @@ export default function Biometric(prop) {
     console.log("webCam closed")
     webcam.stop()
   }
-  function startScan() {
-    var scn = new ScannerSdk()
-    scn.startCapture()
-  }
+
   function stopScan() {
     var scn = new ScannerSdk()
     scn.stopCapture()
   }
   setTimeout(() => {
     startFeed()
-    startScan()
 
   }, 1000)
   React.useEffect(() => {
-
+    var scn = new ScannerSdk()
+    scn.startCapture()
 
   }, [swtch])
 
@@ -185,8 +161,7 @@ export default function Biometric(prop) {
         </div>
 
       </div>
-      <Button disabled  onClick={updateBio}  size="small" disableElevation sx={{width:200, marginLeft:"33%"}} variant='contained' fullWidth={true}  color="primary" >Save and continue</Button>
-
+      <Button disabled   onClick={updateBio}  size="small" disableElevation sx={{width:200, marginLeft:"33%"}} variant='contained' fullWidth={true}  color="primary" >Save and continue</Button>
     </Box>
 
   );

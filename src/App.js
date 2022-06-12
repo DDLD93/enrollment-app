@@ -94,10 +94,8 @@ export default function App() {
     })
   }
   
-  useEffect(() => {
+  useLayoutEffect(() => {
     fetchBene()
-    setTimeout(() => {
-    }, 1000)
   }, [])
 
 

@@ -1,3 +1,3 @@
 module.exports={
-    endPoint:"http://ddld.info/api"
+    endPoint:"https://ddld.info/api"
 }

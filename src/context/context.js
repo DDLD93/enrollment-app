@@ -8,6 +8,7 @@ export const StateContext = createContext();
 
 export default function StateContextProvider({ children }) {
     const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")) || null)
+    const [btn, setbtn] = useState(true)
     const [wardList, setwardList] = useState([])
     const setUsers = () => setUser(JSON.parse(localStorage.getItem("user")) || null)
     const [token, setToken] = useState(localStorage.getItem("token") || null)
@@ -39,7 +40,7 @@ export default function StateContextProvider({ children }) {
 
     }
     const Login = (data) => {
-        console.log(data)
+        setbtn(false)
         fetch(`${config.endPoint}/paypoint/login`, {
             method: "POST",
             headers: {
@@ -58,10 +59,13 @@ export default function StateContextProvider({ children }) {
                     localStorage.setItem("token", response.token)
                     setTokens()
                     notification("Login Success", "success")
+                    setbtn(false)
                     return
                 }
                 notification(response.message, "error")
+                setbtn(false)
             }).catch((err) => {
+                setbtn(false)
                 notification(err.message, "error")
             });
     };
@@ -120,6 +124,8 @@ export default function StateContextProvider({ children }) {
         notification,
         Login,
         setObj,
+        btn,
+        setbtn,
         wardList,
         beneList,
         token,

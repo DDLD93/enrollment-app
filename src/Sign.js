@@ -18,8 +18,7 @@ import { StateContext } from './context/context';
 export default function SignIn() {
     const [email, setemail] = React.useState("")
     const [password, setpassword] = React.useState("")
-    const [btn, setbtn] = React.useState(true)
-    const {Login} = React.useContext(StateContext)
+    const {Login,btn,setbtn} = React.useContext(StateContext)
     const handleSubmit = () => {
         Login({email,password})
     };
@@ -52,6 +51,7 @@ export default function SignIn() {
               <TextField
                 margin="normal"
                 onChange={(e)=>setemail(e.target.value)}
+                type="email"
                 required
                 fullWidth
                 label="Email"
@@ -59,6 +59,7 @@ export default function SignIn() {
               <TextField
                 margin="normal"
                 onChange={(e)=>setpassword(e.target.value)}
+                type="password"
                 required
                 fullWidth
                 label="Password"

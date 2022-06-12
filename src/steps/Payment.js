@@ -8,6 +8,7 @@ import Fingerprint from '@mui/icons-material/Fingerprint';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import PhotoCamera from '@mui/icons-material/PhotoCamera';
+import {Buffer} from 'buffer';
 import { styled } from '@mui/material/styles';
 
 
@@ -78,7 +79,7 @@ export default function Payment(prop) {
         methodOfPayment: type,
         remark,
         amount: 20000,
-        imagePath: imgSrc,
+        imagePath:imgSrc
     }
     setObj("payment",data,id)
     handleModalNext()

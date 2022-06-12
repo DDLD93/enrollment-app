@@ -15,6 +15,7 @@ export default function StateContextProvider({ children }) {
     const setTokens = () => setToken(localStorage.getItem("token"))
     const [beneList, setbeneList] = useState([])
     const [object, setObject] = useState({})
+   
     const setObj = (key,value,id=null) => {
         console.log("id >>>>",id)
         setObject(prevState => ({
@@ -23,12 +24,17 @@ export default function StateContextProvider({ children }) {
         }));
         if(id){
             db.doc({id}).update({
-                ...object
-            }).then(res=>console.log("update result >>>>", res)).catch(err => console.log("error >>>>", err))
+                ...object,
+                status:"paid"
+            }).then(res=>notification("data saved to offline database")).catch(err => console.log("error >>>>", err))
         }
     }
 
     let db = new Localbase('db').collection("beneList")
+    db.config.debug = false
+    const clearIndexDB = ()=>{
+        db.delete()
+    }
 
     // let db = new Localbase('list_db').collection('list')
     const { enqueueSnackbar } = useSnackbar();
@@ -124,8 +130,10 @@ export default function StateContextProvider({ children }) {
         notification,
         Login,
         setObj,
-        btn,
+        clearIndexDB,
         setbtn,
+        db,
+        btn,
         wardList,
         beneList,
         token,

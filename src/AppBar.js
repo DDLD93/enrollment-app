@@ -16,8 +16,9 @@ import MailIcon from '@mui/icons-material/Mail';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import MoreIcon from '@mui/icons-material/MoreVert';
 import LoadingButton from '@mui/lab/LoadingButton';
-import PowerSettingsNewIcon from '@mui/icons-material/PowerSettingsNew';
 import { Avatar, Button } from '@mui/material';
+import {Link} from "react-router-dom";
+import TransitionsModal from './ModalWarning';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -59,10 +60,15 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-export default function NavAppBar({count}) {
+export default function NavAppBar({count,sync}) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
   const [OnlineStatus,setOnlineStatus]=React.useState(false)
+ 
+  const handleSync = React.useCallback(() => {
+    sync()
+  }, [sync])
+  
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
@@ -206,6 +212,7 @@ export default function NavAppBar({count}) {
     <Box sx={{ flexGrow: 1 }}>
       <AppBar color='secondary' position="static">
         <Toolbar>
+        <Link style={{textDecoration:"none",color:"white", display:"flex",justifyContent:"center",alignItems:"center"}} to="/">
           <Avatar bg sx={{ width: "50px", height: "50px", marginRight: "10px", }} alt="AA" src={Logo} />
           <Typography
             variant="h6"
@@ -215,6 +222,7 @@ export default function NavAppBar({count}) {
           >
             ABEDMS
           </Typography>
+        </Link>
           <Search>
             <SearchIconWrapper>
               <SearchIcon />
@@ -230,19 +238,14 @@ export default function NavAppBar({count}) {
               <span>Offline data: </span> <span>{count}</span> <br />
               <span>Processed data: </span> <span>null</span> <br />
             </div>
-            <LoadingButton sx={{height:"30px"}} variant='contained' >Sync</LoadingButton>
+            <LoadingButton onClick={handleSync} sx={{height:"30px"}} variant='contained' >Sync</LoadingButton>
 
 
           </Box>
           <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
             <IconButton size="large" color="inherit">
               <Badge badgeContent={0} color="error">
-                <PowerSettingsNewIcon
-                onClick={()=>{
-                  localStorage.clear()
-                  window.location.reload(false)
-                }}
-                />
+               <TransitionsModal/>
               </Badge>
             </IconButton>
             <IconButton

@@ -2,6 +2,7 @@ import * as React from 'react';
 import Box from '@mui/material/Box';
 import Webcam from 'webcam-easy';
 import { Button, Grid } from '@mui/material';
+import {Buffer} from 'buffer';
 import { StateContext } from '../context/context';
 
 
@@ -44,7 +45,7 @@ export default function Biometric(prop) {
   
   const updateBio = () => {
     let data = {
-        thumbHash:Right,
+        thumbHash:Right ,
         imageHash:image  
     }
     setObj("biometric",data)

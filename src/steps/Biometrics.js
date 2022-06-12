@@ -32,6 +32,7 @@ const style = {
 export default function Biometric(prop) {
   const [swtch, setSwtch] = React.useState(false)
   const [Right, setRight] = React.useState("")
+  const [btn, setbtn] = React.useState(true)
   const [image, setimage] = React.useState("")
   const {setObj} = React.useContext(StateContext)
   let handleNext = prop.next
@@ -135,6 +136,14 @@ export default function Biometric(prop) {
     scn.startCapture()
 
   }, [swtch])
+  React.useEffect(() => {
+   if(!Right || !image){
+     setbtn(true)
+   }else{
+     setbtn(false)
+   }
+
+  }, [Right,image])
 
  
 
@@ -161,7 +170,7 @@ export default function Biometric(prop) {
         </div>
 
       </div>
-      <Button disabled   onClick={updateBio}  size="small" disableElevation sx={{width:200, marginLeft:"33%"}} variant='contained' fullWidth={true}  color="primary" >Save and continue</Button>
+      <Button disabled={btn}   onClick={updateBio}  size="small" disableElevation sx={{width:200, marginLeft:"33%"}} variant='contained' fullWidth={true}  color="primary" >Save and continue</Button>
     </Box>
 
   );

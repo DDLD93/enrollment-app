@@ -58,6 +58,7 @@ export default function Biodata(prop) {
   }
 
   const idTypeList = [
+    "",
     "NIN",
     "PVC",
     "INTL PASSPORT",
@@ -66,6 +67,7 @@ export default function Biodata(prop) {
     "GUARANTOR"
   ]
   const GidTypeList = [
+    "",
     "NIN",
     "PVC",
     "INTL PASSPORT",

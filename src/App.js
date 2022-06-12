@@ -93,10 +93,10 @@ export default function App() {
       setrows(list)
     })
   }
-
+  
   useEffect(() => {
+    fetchBene()
     setTimeout(() => {
-      fetchBene()
     }, 1000)
   }, [])
 
